@@ -318,6 +318,7 @@ For details see the [`values.yaml`](values.yaml) file.
 | `init.nodeSelector`                                       | Node labels for init Job Pod assignment                         | `{}`                                             |
 | `init.tolerations`                                        | Node taints to tolerate by init Job Pod                         | `[]`                                             |
 | `init.resources`                                          | Resource requests and limits for the Pod of init Job            | `{}`                                             |
+| `useHostNetwork`                                          | If true, use the host's network                                 | `nil`                                            |
 | `tls.enabled`                                             | Whether to run securely using TLS certificates                  | `no`                                             |
 | `tls.serviceAccount.create`                               | Whether to create a new RBAC service account                    | `yes`                                            |
 | `tls.serviceAccount.name`                                 | Name of RBAC service account to use                             | `""`                                             |
