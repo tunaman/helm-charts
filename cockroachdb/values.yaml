@@ -7,6 +7,8 @@ image:
     # username: john_doe
     # password: changeme
 
+# Option to use Hotnetwork for CockroachDB
+useHostNetwork: null
 
 # Additional labels to apply to all Kubernetes resources created by this chart.
 labels: {}
