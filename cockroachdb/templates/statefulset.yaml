@@ -203,6 +203,7 @@ spec:
                 {{- range $i, $_ := until 3 -}}
                   {{- if gt $i 0 -}},{{- end -}}
                     ${STATEFULSET_NAME}-{{ $i }}.${STATEFULSET_FQDN}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
+                {{- end -}}
             {{- end }}
             {{- if .Values.useHostNetwork }}
               --advertise-host=$(hostname -f)
