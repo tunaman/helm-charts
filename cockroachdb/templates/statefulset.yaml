@@ -186,6 +186,15 @@ spec:
               exec /cockroach/cockroach
             {{- if index .Values.conf `single-node` }}
               start-single-node
+            {{- else if .Values.useHostNetwork }}
+              start --join=
+              {{- if .Values.conf.join }}
+                {{- join `,` .Values.conf.join -}}
+              {{- else }}
+                {{- range $i, $_ := until 3 -}}
+                  {{- if gt $i 0 -}},{{- end -}}
+                    ${STATEFULSET_NAME}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
+                {{- end -}}
             {{- else }}
               start --join=
               {{- if .Values.conf.join }}
@@ -193,13 +202,8 @@ spec:
               {{- else }}
                 {{- range $i, $_ := until 3 -}}
                   {{- if gt $i 0 -}},{{- end -}}
-                    {{- if .Values.useHostNetwork}}
-                    ${STATEFULSET_NAME}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
-                    {{- else}}
                     ${STATEFULSET_NAME}-{{ $i }}.${STATEFULSET_FQDN}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
-                  {{- end}}
-                {{- end -}}
-              {{- end }}
+            {{- end }}
             {{- if .Values.useHostNetwork }}
               --advertise-host=$(hostname -f)
             {{ else}}
