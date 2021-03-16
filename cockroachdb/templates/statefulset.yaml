@@ -196,7 +196,11 @@ spec:
                   ${STATEFULSET_NAME}-{{ $i }}.${STATEFULSET_FQDN}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
                 {{- end -}}
               {{- end }}
+            {{- if .Values.useHostNetwork }}
+              --advertise-host=$(hostname -f)
+            {{ else}}
               --advertise-host=$(hostname).${STATEFULSET_FQDN}
+            {{- end }}
             {{- with index .Values.conf `cluster-name` }}
               --cluster-name={{ . }}
             {{- if index $.Values.conf `disable-cluster-name-verification` }}

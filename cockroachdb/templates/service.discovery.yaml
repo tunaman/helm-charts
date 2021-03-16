@@ -38,6 +38,7 @@ spec:
   # the sake of the other CockroachDB Pods even before they're ready, since they
   # have to be able to talk to each other in order to become ready.
   publishNotReadyAddresses: true
+  type: {{ .Values.service.public.type | quote }}
   ports:
   {{- $ports := .Values.service.ports }}
     # The main port, served by gRPC, serves Postgres-flavor SQL, inter-node

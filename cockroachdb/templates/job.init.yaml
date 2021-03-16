@@ -109,9 +109,13 @@ spec:
               {{- with index .Values.conf "cluster-name" }}
               --cluster-name={{.}}
               {{- end }}
+              {{- if .Values.useHostNetwork }}
+              --host=$(hostname -f):{{ .Values.service.ports.grpc.internal.port | int64 }}
+              {{- else }}
               --host={{ template "cockroachdb.fullname" . }}-0.{{ template "cockroachdb.fullname" . -}}
                      :{{ .Values.service.ports.grpc.internal.port | int64 }}
               2>&1);
+              {{- end }}
               initRC="$?";
               echo $initOUT;
               [[ "$initRC" == "0" ]] && exit 0;
