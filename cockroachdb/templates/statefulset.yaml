@@ -191,17 +191,17 @@ spec:
               {{- if .Values.conf.join }}
                 {{- join `,` .Values.conf.join -}}
               {{- else }}
-              {{- if .Values.useHostNetwork}}
-                {{- range $i, $_ := until 3 -}}
-                  {{- if gt $i 0 -}},{{- end -}}
-                  {{ template "cockroachdb.name" . }}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
-                {{- end -}}
-              {{- else }}
+              {{- if .Values.useHostNetwork -}}
                 {{- range $i, $_ := until 3 -}}
                   {{- if gt $i 0 -}},{{- end -}}
                   ${STATEFULSET_NAME}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
                 {{- end -}}
-              {{- end}}           
+              {{- else -}}
+                {{- range $i, $_ := until 3 -}}
+                  {{- if gt $i 0 -}},{{- end -}}
+                  ${STATEFULSET_NAME}-{{ $i }}.${STATEFULSET_FQDN}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
+                {{- end -}}
+              {{- end-}}           
               {{- end }}
             {{- if .Values.useHostNetwork }}
               --advertise-host=${STATEFULSET_NAME}
