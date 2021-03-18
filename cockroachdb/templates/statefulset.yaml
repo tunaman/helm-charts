@@ -194,7 +194,7 @@ spec:
               {{- if .Values.useHostNetwork}}
                 {{- range $i, $_ := until 3 -}}
                   {{- if gt $i 0 -}},{{- end -}}
-                  ${STATEFULSET_NAME}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
+                  {{ template "cockroachdb.name" . }}-{{ $i }}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
                 {{- end -}}
               {{- else }}
                 {{- range $i, $_ := until 3 -}}
@@ -204,7 +204,7 @@ spec:
               {{- end}}           
               {{- end }}
             {{- if .Values.useHostNetwork }}
-              --advertise-host= ${STATEFULSET_NAME}
+              --advertise-host=${STATEFULSET_NAME}
             {{ else }}
               --advertise-host=$(hostname).${STATEFULSET_FQDN}
             {{- end }}
