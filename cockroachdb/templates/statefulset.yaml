@@ -91,6 +91,9 @@ spec:
           volumeMounts:
             - name: certs
               mountPath: /cockroach-certs/
+        {{- with .Values.statefulset.init.resources }}
+          resources: {{- toYaml . | nindent 12 }}
+        {{- end }}
       {{- end }}
     {{- end }}
     {{- if or .Values.statefulset.nodeAffinity .Values.statefulset.podAffinity .Values.statefulset.podAntiAffinity }}
@@ -265,10 +268,7 @@ spec:
               mountPath: /cockroach/cockroach-data/
           {{- if .Values.tls.enabled }}
             - name: certs
-              mountPath: /cockroach/cockroach-certs/
-            {{- with .Values.statefulset.init.resources }}
-              resources: {{- toYaml . | nindent 12 }}
-            {{- end }}              
+              mountPath: /cockroach/cockroach-certs/            
           {{- end }}
           {{- range .Values.statefulset.secretMounts }}
             - name: {{ printf "secret-%s" . | quote }}
