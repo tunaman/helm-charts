@@ -201,7 +201,7 @@ spec:
                   {{- if gt $i 0 -}},{{- end -}}
                   ${STATEFULSET_NAME}-{{ $i }}.${STATEFULSET_FQDN}:{{ $.Values.service.ports.grpc.internal.port | int64 -}}
                 {{- end -}}
-              {{- end-}}           
+              {{- end -}}
               {{- end }}
             {{- if .Values.useHostNetwork }}
               --advertise-host=${STATEFULSET_NAME}
@@ -266,7 +266,9 @@ spec:
           {{- if .Values.tls.enabled }}
             - name: certs
               mountPath: /cockroach/cockroach-certs/
-              
+            {{- with .Values.statefulset.init.resources }}
+              resources: {{- toYaml . | nindent 12 }}
+            {{- end }}              
           {{- end }}
           {{- range .Values.statefulset.secretMounts }}
             - name: {{ printf "secret-%s" . | quote }}
