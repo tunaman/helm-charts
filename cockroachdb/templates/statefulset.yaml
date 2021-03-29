@@ -266,6 +266,7 @@ spec:
           {{- if .Values.tls.enabled }}
             - name: certs
               mountPath: /cockroach/cockroach-certs/
+              
           {{- end }}
           {{- range .Values.statefulset.secretMounts }}
             - name: {{ printf "secret-%s" . | quote }}
